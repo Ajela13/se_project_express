@@ -12,6 +12,7 @@ mongoose
   })
   .catch(console.log(console.error));
 
+app.use(express.json());
 app.use("/", mainRouter);
 
 app.listen(PORT, () => {
