@@ -15,8 +15,8 @@ const ClothingItemsSchema = new mongoose.Schema({
     message: "You must enter a valid URL",
   },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  likes: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },
-  createdAt: { type: Date, default: Data.now },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
+  createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("user", ClothingItemsSchema);
+module.exports = mongoose.model("clothingItems", ClothingItemsSchema);
