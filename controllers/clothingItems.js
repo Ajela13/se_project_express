@@ -86,6 +86,3 @@ module.exports = {
   updateItemLike,
   deleteItemLike,
 };
-
-`PUT /items/:itemId/likes — like an item
-DELETE /items/:itemId/likes — unlike an item`;
