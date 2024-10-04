@@ -5,6 +5,7 @@ const {
   documentNotFoundError,
   defaultError,
 } = require("../utils/errors");
+
 module.exports.createClothingItem = (req) => {
   console.log(req.user._id);
 };
