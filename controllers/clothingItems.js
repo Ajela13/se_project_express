@@ -1,10 +1,11 @@
 const clothingItems = require("../models/clothingItems");
+
 const {
   castError,
   documentNotFoundError,
   defaultError,
 } = require("../utils/errors");
-module.exports.createClothingItem = (req, res) => {
+module.exports.createClothingItem = (req) => {
   console.log(req.user._id);
 };
 
@@ -44,7 +45,8 @@ const deleteItem = (req, res) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(documentNotFoundError).send({ message: err.message });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(castError).send({ message: err.message });
       }
       return res.status(defaultError).send({ message: err.message });
@@ -66,7 +68,8 @@ const updateItemLike = (req, res) => {
 
       if (err.name === "DocumentNotFoundError") {
         return res.status(documentNotFoundError).send({ message: err.message });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(castError).send({ message: err.message });
       }
       return res.status(defaultError).send({ message: err.message });
@@ -87,7 +90,8 @@ const deleteItemLike = (req, res) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(documentNotFoundError).send({ message: err.message });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res.status(castError).send({ message: err.message });
       }
       return res.status(defaultError).send({ message: err.message });
