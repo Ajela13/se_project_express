@@ -50,10 +50,16 @@ const deleteItem = (req, res) => {
 const updateItemLike = (req, res) => {
   const { itemId } = req.params;
   clothingItems
-    .findByIdAndUpdate(itemId)
+    .findByIdAndUpdate(
+      itemId,
+      { $addToSet: { likes: req.user._id } },
+      { new: true }
+    )
     .orFail()
     .then((item) => res.status(200).send(item))
     .catch((err) => {
+      console.error(err);
+
       if (err.name === "DocumentNotFoundError") {
         return res.status(404).send({ message: err.message });
       } else if (err.name === "CastError") {
@@ -66,10 +72,15 @@ const updateItemLike = (req, res) => {
 const deleteItemLike = (req, res) => {
   const { itemId } = req.params;
   clothingItems
-    .findByIdAndDelete(itemId)
+    .findByIdAndUpdate(
+      itemId,
+      { $pull: { likes: req.user._id } },
+      { new: true }
+    )
     .orFail()
     .then((item) => res.status(200).send(item))
     .catch((err) => {
+      console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(404).send({ message: err.message });
       } else if (err.name === "CastError") {
