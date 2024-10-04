@@ -1,5 +1,9 @@
 const clothingItems = require("../models/clothingItems");
-
+const {
+  castError,
+  documentNotFoundError,
+  defaultError,
+} = require("../utils/errors");
 module.exports.createClothingItem = (req, res) => {
   console.log(req.user._id);
 };
@@ -12,7 +16,7 @@ const getItems = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res.status(500).send({ message: err.message });
+      return res.status(defaultError).send({ message: err.message });
     });
 };
 
@@ -24,7 +28,7 @@ const createItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(castError).send({ message: err.message });
       }
       return res.status(500).send({ message: err.message });
     });
@@ -39,11 +43,11 @@ const deleteItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res.status(documentNotFoundError).send({ message: err.message });
       } else if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(castError).send({ message: err.message });
       }
-      return res.status(500).send({ message: err.message });
+      return res.status(defaultError).send({ message: err.message });
     });
 };
 
@@ -61,11 +65,11 @@ const updateItemLike = (req, res) => {
       console.error(err);
 
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res.status(documentNotFoundError).send({ message: err.message });
       } else if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(castError).send({ message: err.message });
       }
-      return res.status(500).send({ message: err.message });
+      return res.status(defaultError).send({ message: err.message });
     });
 };
 
@@ -82,11 +86,11 @@ const deleteItemLike = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res.status(documentNotFoundError).send({ message: err.message });
       } else if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(castError).send({ message: err.message });
       }
-      return res.status(500).send({ message: err.message });
+      return res.status(defaultError).send({ message: err.message });
     });
 };
 
