@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes/index");
+const { documentNotFoundError } = require("../utils/errors");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -23,7 +24,9 @@ app.use(express.json());
 app.use("/", mainRouter);
 
 app.use((req, res) => {
-  res.status(404).json({ message: "Requested resource not found" });
+  res
+    .status(documentNotFoundError)
+    .json({ message: "Requested resource not found" });
 });
 
 app.listen(PORT, () => {
