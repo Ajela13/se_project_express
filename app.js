@@ -10,7 +10,7 @@ mongoose
   .then(() => {
     console.log("connected to db");
   })
-  .catch(console.log(console.error));
+  .catch(console.error);
 
 app.use((req, res, next) => {
   req.user = {
