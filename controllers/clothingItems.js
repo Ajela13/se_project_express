@@ -18,7 +18,9 @@ const getItems = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res.status(defaultError).send({ message: err.message });
+      return res
+        .status(defaultError)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -30,9 +32,11 @@ const createItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(castError).send({ message: err.message });
+        return res.status(castError).send({ message: "Invalid data" });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(defaultError)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -48,9 +52,11 @@ const deleteItem = (req, res) => {
         return res.status(documentNotFoundError).send({ message: err.message });
       }
       if (err.name === "CastError") {
-        return res.status(castError).send({ message: err.message });
+        return res.status(castError).send({ message: "Invalid data" });
       }
-      return res.status(defaultError).send({ message: err.message });
+      return res
+        .status(defaultError)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -71,9 +77,11 @@ const updateItemLike = (req, res) => {
         return res.status(documentNotFoundError).send({ message: err.message });
       }
       if (err.name === "CastError") {
-        return res.status(castError).send({ message: err.message });
+        return res.status(castError).send({ message: "Invalid data" });
       }
-      return res.status(defaultError).send({ message: err.message });
+      return res
+        .status(defaultError)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -93,9 +101,11 @@ const deleteItemLike = (req, res) => {
         return res.status(documentNotFoundError).send({ message: err.message });
       }
       if (err.name === "CastError") {
-        return res.status(castError).send({ message: err.message });
+        return res.status(castError).send({ message: "Invalid data" });
       }
-      return res.status(defaultError).send({ message: err.message });
+      return res
+        .status(defaultError)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
