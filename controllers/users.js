@@ -4,6 +4,7 @@ const {
   documentNotFoundError,
   defaultError,
 } = require("../utils/errors");
+const bcrypt = require("bcrypt");
 
 const getUsers = (req, res) => {
   User.find({})
@@ -19,18 +20,26 @@ const getUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, avatar } = req.body;
-  User.create({ name, avatar })
-    .then((user) => res.status(201).send(user))
-    .catch((err) => {
-      console.error(err);
-      if (err.name === "ValidationError") {
-        return res.status(castError).send({ message: "Invalid data" });
-      }
-      return res
-        .status(defaultError)
-        .send({ message: "An error has occurred on the server" });
-    });
+  const { name, avatar, email, password } = req.body;
+
+  bcrypt.hash(password, 10).then((hash) => {
+    User.create({ name, avatar, email, password: hash })
+      .then((user) => res.status(201).send(user))
+      .catch((err) => {
+        console.error(err);
+        if (err.name === "ValidationError") {
+          return res.status(castError).send({ message: "Invalid data" });
+        }
+        if (err.code === 11000 && err.keyPattern.email) {
+          return res
+            .status(castError)
+            .send({ message: "Email already exists." });
+        }
+        return res
+          .status(defaultError)
+          .send({ message: "An error has occurred on the server" });
+      });
+  });
 };
 
 const getUserById = (req, res) => {
