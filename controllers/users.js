@@ -5,6 +5,8 @@ const {
   defaultError,
 } = require("../utils/errors");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../utils/config");
 
 const getUsers = (req, res) => {
   User.find({})
@@ -60,4 +62,18 @@ const getUserById = (req, res) => {
         .send({ message: "An error has occurred on the server" });
     });
 };
-module.exports = { getUsers, createUser, getUserById };
+
+const login = (req, res) => {
+  const { email, password } = req.body;
+  User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
+      res.send({ token });
+    })
+    .catch((err) => {
+      return res.status(401).send({ message: "Incorrect email or password" });
+    });
+};
+module.exports = { getUsers, createUser, getUserById, login };
