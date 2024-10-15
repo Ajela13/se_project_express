@@ -12,6 +12,7 @@
   "author": "Alejandra Marino Parra",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.21.0",
     "mongoose": "^6.6.1",
     "validator": "^13.12.0"
