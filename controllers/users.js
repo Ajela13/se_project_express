@@ -17,13 +17,13 @@ const createUser = (req, res) => {
       .then((user) => res.status(201).send(user))
       .catch((err) => {
         console.error(err);
-        if (err.name === "ValidationError") {
-          return res.status(castError).send({ message: "Invalid data" });
-        }
-        if (err.code === 11000 && err.keyPattern.email) {
+        if (err.code === 11000) {
           return res
             .status(unauthorizedError)
             .send({ message: "Email already exists." });
+        }
+        if (err.name === "ValidationError") {
+          return res.status(castError).send({ message: "Invalid data" });
         }
         return res
           .status(defaultError)
@@ -46,5 +46,24 @@ const login = (req, res) => {
     });
 };
 
+const getCurrentUser = (req, res) => {
+  const { userId } = req.params;
+  User.findById(userId)
+    .orFail()
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(documentNotFoundError).send({ message: err.message });
+      }
+      if (err.name === "CastError") {
+        return res.status(castError).send({ message: "Invalid data" });
+      }
+      return res
+        .status(defaultError)
+        .send({ message: "An error has occurred on the server" });
+    });
+};
+
 const modifyCurrentUser = (req, res) => {};
-module.exports = { createUser, login, modifyCurrentUser };
+module.exports = { createUser, getCurrentUser, login, modifyCurrentUser };
