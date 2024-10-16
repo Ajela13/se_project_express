@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes/index");
 const { documentNotFoundError } = require("./utils/errors");
+const { login, createUser } = require("./controllers/users");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -21,6 +22,8 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.post("/signin", login);
+app.post("/signup", createUser);
 app.use("/", mainRouter);
 
 app.use((req, res) => {
