@@ -17,7 +17,7 @@ const createUser = (req, res) => {
       .then((user) => res.status(201).send(user))
       .catch((err) => {
         console.error(err);
-        if (err.code === 11000) {
+        if (err.statusCode === 11000) {
           return res
             .status(unauthorizedError)
             .send({ message: "Email already exists." });
