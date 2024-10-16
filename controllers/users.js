@@ -19,7 +19,7 @@ const createUser = (req, res) => {
         console.error(err);
         if (err.statusCode === 11000) {
           return res
-            .status(unauthorizedError)
+            .status(castError)
             .send({ message: "Email already exists." });
         }
         if (err.name === "ValidationError") {
@@ -42,7 +42,9 @@ const login = (req, res) => {
       res.send({ token });
     })
     .catch((err) => {
-      return res.status(401).send({ message: "Incorrect email or password" });
+      return res
+        .status(unauthorizedError)
+        .send({ message: "Incorrect email or password" });
     });
 };
 
