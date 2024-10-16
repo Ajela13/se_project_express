@@ -3,7 +3,7 @@ const {
   castError,
   documentNotFoundError,
   defaultError,
-  unauthorizedError,
+  duplicationError,
 } = require("../utils/errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -12,14 +12,20 @@ const { JWT_SECRET } = require("../utils/config");
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
+  if (!email || !password) {
+    return res
+      .status(castError)
+      .send({ message: "Email and Password are REQUIRED!" });
+  }
+
   bcrypt.hash(password, 10).then((hash) => {
-    User.create({ name, avatar, email, password: hash })
+    User.create({ name, avatar, email, hash })
       .then((user) => res.status(201).send(user))
       .catch((err) => {
         console.error(err);
-        if (err.statusCode === 11000) {
+        if (err.code === 11000 && err.keyPattern.email) {
           return res
-            .status(castError)
+            .status(duplicationError)
             .send({ message: "Email already exists." });
         }
         if (err.name === "ValidationError") {
@@ -34,6 +40,11 @@ const createUser = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res
+      .status(400)
+      .send({ message: "Email and Password are REQUIRED!" });
+  }
   User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
@@ -42,9 +53,7 @@ const login = (req, res) => {
       res.send({ token });
     })
     .catch((err) => {
-      return res
-        .status(unauthorizedError)
-        .send({ message: "Incorrect email or password" });
+      return res.status(401).send({ message: "Incorrect email or password" });
     });
 };
 
