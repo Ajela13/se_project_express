@@ -50,9 +50,20 @@ const login = (req, res) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-      res.send({ token });
+      res.status(200).send({
+        token,
+      });
     })
     .catch((err) => {
+      console.log(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(documentNotFoundError)
+          .send({ message: "email or password not found" });
+      }
+      if (err.name === "CastError") {
+        return res.status(castError).send({ message: "Invalid data" });
+      }
       return res.status(401).send({ message: "Incorrect email or password" });
     });
 };
