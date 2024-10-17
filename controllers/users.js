@@ -18,9 +18,9 @@ const createUser = (req, res) => {
       .send({ message: "Email and Password are REQUIRED!" });
   }
 
-  bcrypt.hash(password, 10).then((hash) => {
-    User.create({ name, avatar, email, hash })
-      .then((user) => res.status(201).send(user))
+  return bcrypt.hash(password, 10).then((hash) => {
+    User.create({ name, avatar, email, password: hash })
+      .then(() => res.status(201).send({ name, avatar, email }))
       .catch((err) => {
         console.error(err);
         if (err.code === 11000 && err.keyPattern.email) {
@@ -47,6 +47,9 @@ const login = (req, res) => {
   }
   User.findUserByCredentials(email, password)
     .then((user) => {
+      if (!user) {
+        return res.status(400).send({ message: "Invalid email or password" });
+      }
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
