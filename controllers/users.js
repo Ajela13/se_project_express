@@ -94,5 +94,27 @@ const getCurrentUser = (req, res) => {
     });
 };
 
-const modifyCurrentUser = (req, res) => {};
-module.exports = { createUser, getCurrentUser, login, modifyCurrentUser };
+const updateCurrentUser = (req, res) => {
+  const userId = req.user._id;
+  const { name, avatar } = req.body;
+  User.findByIdAndUpdate(
+    userId,
+    { name, avatar },
+    { new: true, runValidators: true }
+  )
+    .then(() => {
+      res.status(200).send({ name, avatar });
+    })
+    .catch((err) => {
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(documentNotFoundError).send({ message: err.message });
+      }
+      if (err.name === "CastError") {
+        return res.status(castError).send({ message: "Invalid data" });
+      }
+      return res
+        .status(defaultError)
+        .send({ message: "An error has occurred on the server" });
+    });
+};
+module.exports = { createUser, login, getCurrentUser, updateCurrentUser };
