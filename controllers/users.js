@@ -71,8 +71,8 @@ const login = (req, res) => {
 const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
     .orFail()
-    .then((userId) => {
-      if (!userId) {
+    .then((user) => {
+      if (!user) {
         return res.status(castError).send({ message: "User not found" });
       }
       res.status(200).send(user);
