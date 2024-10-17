@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    require: true,
+    required: true,
     unique: true,
     validate: {
       validator(v) {
@@ -25,26 +25,27 @@ const UserSchema = new mongoose.Schema({
       message: "Wrong email format",
     },
   },
-  password: { type: String, require: true },
+  password: { type: String, required: true, select: false },
 });
 
 UserSchema.statics.findUserByCredentials = function findUserByCredentials(
   email,
   password
 ) {
-  return this.findOne({ email }).then((user) => {
-    if (!user) {
-      return Promise.reject(new Error("Incorrect email or password"));
-    }
-
-    return bcrypt.compare(password, user.password).then((matched) => {
-      if (!matched) {
+  return this.findOne({ email })
+    .select("+password")
+    .then((user) => {
+      if (!user) {
         return Promise.reject(new Error("Incorrect email or password"));
       }
+      return bcrypt.compare(password, user.password).then((matched) => {
+        if (!matched) {
+          return Promise.reject(new Error("Incorrect email or password"));
+        }
 
-      return user; // now user is available
+        return user; // now user is available
+      });
     });
-  });
 };
 
 module.exports = mongoose.model("user", UserSchema);
