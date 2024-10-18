@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const mainRouter = require("./routes/index");
 const { documentNotFoundError } = require("./utils/errors");
 const { login, createUser } = require("./controllers/users");
+const cors = require("cors");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -14,6 +15,7 @@ mongoose
   })
   .catch(console.error);
 
+app.use(cors());
 app.use(express.json());
 app.post("/signin", login);
 app.post("/signup", createUser);
