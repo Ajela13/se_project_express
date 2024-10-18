@@ -45,7 +45,7 @@ const login = (req, res) => {
       .status(400)
       .send({ message: "Email and Password are REQUIRED!" });
   }
-  User.findUserByCredentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       if (!user) {
         return res.status(400).send({ message: "Invalid email or password" });
