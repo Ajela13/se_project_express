@@ -10,8 +10,6 @@ module.exports = (req, res, next) => {
 
   const token = authorization.replace("Bearer ", "");
 
-  // verifying the token
-
   let payload;
 
   try {
