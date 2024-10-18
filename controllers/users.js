@@ -103,7 +103,7 @@ const updateCurrentUser = (req, res) => {
     { new: true, runValidators: true }
   )
     .then(() => {
-      res.status(200).send({ name, avatar });
+      return res.status(200).send({ name, avatar });
     })
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
