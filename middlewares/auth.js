@@ -10,8 +10,6 @@ module.exports = (req, res, next) => {
 
   const token = authorization.replace("Bearer ", "");
 
-  // verifying the token
-
   let payload;
 
   try {
@@ -20,6 +18,6 @@ module.exports = (req, res, next) => {
     return res.status(401).send({ message: "Authorization Required" });
   }
 
-  req.user = payload;
+  return (req.user = payload);
   next();
 };

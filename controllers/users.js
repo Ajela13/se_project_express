@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const {
   castError,
@@ -5,8 +7,6 @@ const {
   defaultError,
   duplicationError,
 } = require("../utils/errors");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 
 const createUser = (req, res) => {
@@ -53,7 +53,7 @@ const login = (req, res) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-      res.status(200).send({
+      return res.status(200).send({
         token,
       });
     })
@@ -78,7 +78,7 @@ const getCurrentUser = (req, res) => {
       if (!user) {
         return res.status(castError).send({ message: "User not found" });
       }
-      res.status(200).send(user);
+      return res.status(200).send(user);
     })
     .catch((err) => {
       console.error(err);
