@@ -6,10 +6,6 @@ const {
   defaultError,
 } = require("../utils/errors");
 
-module.exports.createClothingItem = (req) => {
-  console.log(req.user._id);
-};
-
 const getItems = (req, res) => {
   clothingItems
     .find({})
@@ -45,7 +41,13 @@ const deleteItem = (req, res) => {
   clothingItems
     .findByIdAndDelete(itemId)
     .orFail()
-    .then((item) => res.status(200).send(item))
+    .then((item) => {
+      if (!item.owner.equals(req.user._id)) {
+        res.status(403).send({ message: "You can not delete item" });
+      }
+
+      res.status(200).send(item);
+    })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
