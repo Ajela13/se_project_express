@@ -49,7 +49,7 @@ const deleteItem = (req, res) => {
           .send({ message: "You can not delete item" });
       }
 
-      res.status(200).send(item);
+      return res.status(200).send(item);
     })
     .catch((err) => {
       console.error(err);

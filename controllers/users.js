@@ -70,7 +70,7 @@ const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
     .orFail()
     .then((user) => {
-      return res.status(200).send(user);
+      res.status(200).send(user);
     })
     .catch((err) => {
       console.error(err);
