@@ -49,7 +49,7 @@ const deleteItem = (req, res) => {
           .send({ message: "You can not delete item" });
       }
 
-      return res.status(200).send(item);
+      return res.send(item);
     })
     .catch((err) => {
       console.error(err);
@@ -74,7 +74,7 @@ const updateItemLike = (req, res) => {
       { new: true }
     )
     .orFail()
-    .then((item) => res.status(200).send(item))
+    .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
 
@@ -99,7 +99,7 @@ const deleteItemLike = (req, res) => {
       { new: true }
     )
     .orFail()
-    .then((item) => res.status(200).send(item))
+    .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
