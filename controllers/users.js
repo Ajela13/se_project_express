@@ -48,11 +48,6 @@ const login = (req, res) => {
   }
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      if (!user) {
-        return res
-          .status(castError)
-          .send({ message: "Invalid email or password" });
-      }
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
