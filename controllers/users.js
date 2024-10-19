@@ -70,9 +70,6 @@ const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
     .orFail()
     .then((user) => {
-      if (!user) {
-        return res.status(castError).send({ message: "User not found" });
-      }
       return res.status(200).send(user);
     })
     .catch((err) => {
