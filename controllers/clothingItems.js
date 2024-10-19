@@ -4,6 +4,7 @@ const {
   castError,
   documentNotFoundError,
   defaultError,
+  forbiddenError,
 } = require("../utils/errors");
 
 const getItems = (req, res) => {
@@ -43,7 +44,9 @@ const deleteItem = (req, res) => {
     .orFail()
     .then((item) => {
       if (!item.owner.equals(req.user._id)) {
-        res.status(403).send({ message: "You can not delete item" });
+        return res
+          .status(forbiddenError)
+          .send({ message: "You can not delete item" });
       }
 
       res.status(200).send(item);
