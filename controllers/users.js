@@ -57,14 +57,6 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(documentNotFoundError)
-          .send({ message: "email or password not found" });
-      }
-      if (err.name === "CastError") {
-        return res.status(castError).send({ message: "Invalid data" });
-      }
       return res
         .status(unauthorizedError)
         .send({ message: "Incorrect email or password" });
