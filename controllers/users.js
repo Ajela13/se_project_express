@@ -6,6 +6,7 @@ const {
   documentNotFoundError,
   defaultError,
   duplicationError,
+  unauthorizedError,
 } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
@@ -42,13 +43,15 @@ const login = (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res
-      .status(400)
+      .status(castError)
       .send({ message: "Email and Password are REQUIRED!" });
   }
   return User.findUserByCredentials(email, password)
     .then((user) => {
       if (!user) {
-        return res.status(400).send({ message: "Invalid email or password" });
+        return res
+          .status(castError)
+          .send({ message: "Invalid email or password" });
       }
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
@@ -67,7 +70,9 @@ const login = (req, res) => {
       if (err.name === "CastError") {
         return res.status(castError).send({ message: "Invalid data" });
       }
-      return res.status(401).send({ message: "Incorrect email or password" });
+      return res
+        .status(unauthorizedError)
+        .send({ message: "Incorrect email or password" });
     });
 };
 
