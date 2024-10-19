@@ -94,6 +94,7 @@ const updateCurrentUser = (req, res) => {
     { name, avatar },
     { new: true, runValidators: true }
   )
+    .orFail()
     .then(() => {
       res.status(200).send({ name, avatar });
     })
@@ -101,7 +102,7 @@ const updateCurrentUser = (req, res) => {
       if (err.name === "DocumentNotFoundError") {
         return res.status(documentNotFoundError).send({ message: err.message });
       }
-      if (err.name === "CastError") {
+      if (err.name === "ValidationError") {
         return res.status(castError).send({ message: "Invalid data" });
       }
       return res
