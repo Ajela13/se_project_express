@@ -11,7 +11,7 @@ const {
 const { JWT_SECRET } = require("../utils/config");
 
 const createUser = (req, res) => {
-  const { name, avatar, email, password } = req.body;
+  const { email, password, name, avatar } = req.body;
 
   if (!email || !password) {
     return res
@@ -67,7 +67,6 @@ const login = (req, res) => {
         .send({ message: "An error has occurred on the server" });
     });
 };
-
 const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
     .orFail()
