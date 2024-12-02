@@ -18,6 +18,9 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return res.status(unauthorizedError).json({ message: "Token expired" });
+    }
     return res
       .status(unauthorizedError)
       .send({ message: "Authorization Required" });
