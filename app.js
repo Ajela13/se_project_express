@@ -4,6 +4,7 @@ const cors = require("cors");
 const mainRouter = require("./routes/index");
 const { documentNotFoundError } = require("./utils/errors");
 const { login, createUser } = require("./controllers/users");
+const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -26,6 +27,8 @@ app.use((req, res) => {
     .status(documentNotFoundError)
     .json({ message: "Requested resource not found" });
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`server is runing on port ${PORT}`);
