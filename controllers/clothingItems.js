@@ -1,10 +1,9 @@
 const clothingItems = require("../models/clothingItems");
 
 const {
-  castError,
-  documentNotFoundError,
-  defaultError,
-  forbiddenError,
+  CastError,
+  DocumentNotFoundError,
+  ForbiddenError,
 } = require("../utils/errors");
 
 const getItems = (req, res) => {
@@ -15,9 +14,7 @@ const getItems = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res
-        .status(defaultError)
-        .send({ message: "An error has occurred on the server" });
+      return next(err);
     });
 };
 
@@ -29,11 +26,9 @@ const createItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(castError).send({ message: "Invalid data" });
+        return next(new CastError());
       }
-      return res
-        .status(defaultError)
-        .send({ message: "An error has occurred on the server" });
+      return next(err);
     });
 };
 
@@ -41,12 +36,12 @@ const deleteItem = (req, res) => {
   const { itemId } = req.params;
   clothingItems
     .findById(itemId)
-    .orFail()
+    .orFail(() => {
+      throw new DocumentNotFoundError("User not found");
+    })
     .then((item) => {
       if (!item.owner.equals(req.user._id)) {
-        return res
-          .status(forbiddenError)
-          .send({ message: "You can not delete item" });
+        throw new ForbiddenError("You cannot delete this item"); // Throw ForbiddenError when the user is not the owner
       }
       return item.deleteOne().then(() => {
         res.send({ message: "successfully deleted" });
@@ -54,15 +49,10 @@ const deleteItem = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(documentNotFoundError).send({ message: err.message });
-      }
       if (err.name === "CastError") {
-        return res.status(castError).send({ message: "Invalid data" });
+        return next(new CastError("Invalid data"));
       }
-      return res
-        .status(defaultError)
-        .send({ message: "An error has occurred on the server" });
+      next(err);
     });
 };
 
@@ -74,20 +64,16 @@ const updateItemLike = (req, res) => {
       { $addToSet: { likes: req.user._id } },
       { new: true }
     )
-    .orFail()
+    .orFail(() => {
+      throw new DocumentNotFoundError("Item not found");
+    })
     .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
-
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(documentNotFoundError).send({ message: err.message });
-      }
       if (err.name === "CastError") {
-        return res.status(castError).send({ message: "Invalid data" });
+        return next(new CastError("Invalid data"));
       }
-      return res
-        .status(defaultError)
-        .send({ message: "An error has occurred on the server" });
+      next(err);
     });
 };
 
@@ -99,19 +85,16 @@ const deleteItemLike = (req, res) => {
       { $pull: { likes: req.user._id } },
       { new: true }
     )
-    .orFail()
+    .orFail(() => {
+      throw new DocumentNotFoundError("Item not found");
+    })
     .then((item) => res.send(item))
     .catch((err) => {
       console.error(err);
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(documentNotFoundError).send({ message: err.message });
-      }
       if (err.name === "CastError") {
-        return res.status(castError).send({ message: "Invalid data" });
+        return next(new CastError("Invalid data"));
       }
-      return res
-        .status(defaultError)
-        .send({ message: "An error has occurred on the server" });
+      next(err);
     });
 };
 
