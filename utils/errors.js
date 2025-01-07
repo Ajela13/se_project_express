@@ -1,15 +1,45 @@
-const castError = 400;
-const documentNotFoundError = 404;
-const defaultError = 500;
-const duplicationError = 409;
-const unauthorizedError = 401;
-const forbiddenError = 403;
+class CustomError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+class CastError extends CustomError {
+  constructor(message = "Invalid data") {
+    super(message, 400);
+  }
+}
+
+class DocumentNotFoundError extends CustomError {
+  constructor(message = "Resource not found") {
+    super(message, 404);
+  }
+}
+
+class DuplicationError extends CustomError {
+  constructor(message = "Duplicate resource") {
+    super(message, 409);
+  }
+}
+
+class UnauthorizedError extends CustomError {
+  constructor(message = "Authorization required") {
+    super(message, 401);
+  }
+}
+
+class ForbiddenError extends CustomError {
+  constructor(message = "You can not delete item") {
+    super(message, 403);
+  }
+}
 
 module.exports = {
-  castError,
-  documentNotFoundError,
-  defaultError,
-  duplicationError,
-  unauthorizedError,
-  forbiddenError,
+  CustomError,
+  CastError,
+  DocumentNotFoundError,
+  DuplicationError,
+  UnauthorizedError,
+  ForbiddenError,
 };
