@@ -10,6 +10,7 @@ const {
   validateUserLoggedIn,
 } = require("./middlewares/validation");
 const { errors } = require("celebrate");
+const { requestLogger, errorLogger } = require("./middlewares/loggers");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -23,6 +24,7 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
 app.post("/signin", validateUserLoggedIn, login);
 app.post("/signup", validateUserCreated, createUser);
 app.use("/", mainRouter);
@@ -32,6 +34,8 @@ app.use((req, res) => {
     .status(documentNotFoundError)
     .json({ message: "Requested resource not found" });
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
