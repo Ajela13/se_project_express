@@ -5,6 +5,11 @@ const mainRouter = require("./routes/index");
 const { documentNotFoundError } = require("./utils/errors");
 const { login, createUser } = require("./controllers/users");
 const errorHandler = require("./middlewares/errorHandler");
+const {
+  validateUserCreated,
+  validateUserLoggedIn,
+} = require("./middlewares/validation");
+const { errors } = require("celebrate");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -18,8 +23,8 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
-app.post("/signin", login);
-app.post("/signup", createUser);
+app.post("/signin", validateUserLoggedIn, login);
+app.post("/signup", validateUserCreated, createUser);
 app.use("/", mainRouter);
 
 app.use((req, res) => {
@@ -27,6 +32,8 @@ app.use((req, res) => {
     .status(documentNotFoundError)
     .json({ message: "Requested resource not found" });
 });
+
+app.use(errors());
 
 app.use(errorHandler);
 
