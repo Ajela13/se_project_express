@@ -11,6 +11,7 @@ const {
 } = require("./middlewares/validation");
 const { errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/loggers");
+require("dotenv").config();
 
 const app = express();
 const { PORT = 3001 } = process.env;
