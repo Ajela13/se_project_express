@@ -15,11 +15,6 @@ require("dotenv").config();
 const app = express();
 const { PORT = 3001 } = process.env;
 
-const allowedOrigins = [
-  "https://wtwr.casepractice.com",
-  "https://www.wtwr.casepractice.com",
-];
-
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
@@ -27,13 +22,7 @@ mongoose
   })
   .catch(console.error);
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: "GET,POST",
-    allowedHeaders: "Content-Type, Authorization",
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
