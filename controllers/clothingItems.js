@@ -10,7 +10,7 @@ const getItems = (req, res, next) => {
   clothingItems
     .find({})
     .then((items) => {
-      res.send(items);
+      res.status(200).send(items);
     })
     .catch((err) => {
       console.error(err);
@@ -44,7 +44,7 @@ const deleteItem = (req, res, next) => {
         throw new ForbiddenError("You cannot delete this item"); // Throw ForbiddenError when the user is not the owner
       }
       return item.deleteOne().then(() => {
-        res.send({ message: "successfully deleted" });
+        res.status(200).send({ message: "successfully deleted" });
       });
     })
     .catch((err) => {
