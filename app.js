@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const { errors } = require("celebrate");
 const cors = require("cors");
 const mainRouter = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
@@ -9,7 +10,6 @@ const {
   validateUserCreated,
   validateUserLoggedIn,
 } = require("./middlewares/validation");
-const { errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/loggers");
 const {
   DocumentNotFoundError,
