@@ -12,9 +12,22 @@ const {
 const { errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/loggers");
 require("dotenv").config();
+const cors = require("cors");
 
 const app = express();
 const { PORT = 3001 } = process.env;
+
+const allowedOrigins = [
+  "https://wtwr.casepractice.com",
+  "https://www.wtwr.casepractice.com",
+]; // Allow the frontend domain
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: "GET,POST",
+    allowedHeaders: "Content-Type, Authorization",
+  })
+);
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
