@@ -6,7 +6,7 @@ const {
   ForbiddenError,
 } = require("../utils/errors");
 
-const getItems = (req, res) => {
+const getItems = (req, res, next) => {
   clothingItems
     .find({})
     .then((items) => {
@@ -18,7 +18,7 @@ const getItems = (req, res) => {
     });
 };
 
-const createItem = (req, res) => {
+const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
   clothingItems
     .create({ name, weather, imageUrl, owner: req.user._id })
@@ -32,7 +32,7 @@ const createItem = (req, res) => {
     });
 };
 
-const deleteItem = (req, res) => {
+const deleteItem = (req, res, next) => {
   const { itemId } = req.params;
   clothingItems
     .findById(itemId)
@@ -56,7 +56,7 @@ const deleteItem = (req, res) => {
     });
 };
 
-const updateItemLike = (req, res) => {
+const updateItemLike = (req, res, next) => {
   const { itemId } = req.params;
   clothingItems
     .findByIdAndUpdate(
@@ -77,7 +77,7 @@ const updateItemLike = (req, res) => {
     });
 };
 
-const deleteItemLike = (req, res) => {
+const deleteItemLike = (req, res, next) => {
   const { itemId } = req.params;
   clothingItems
     .findByIdAndUpdate(
