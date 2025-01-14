@@ -25,7 +25,7 @@ const createUser = (req, res, next) => {
           return next(new DuplicationError("Email already exists."));
         }
         if (err.name === "ValidationError") {
-          return next(new CastError());
+          return next(new CastError("Invalid data"));
         }
         return next(err);
       });
@@ -75,7 +75,7 @@ const getCurrentUser = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "CastError") {
-        return next(new CastError());
+        return next(new CastError("Invalid data"));
       }
       return next(err);
     });
@@ -98,7 +98,7 @@ const updateCurrentUser = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return next(new CastError());
+        return next(new CastError("Invalid data"));
       }
       return next(err);
     });
