@@ -11,7 +11,9 @@ const {
 } = require("./middlewares/validation");
 const { errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/loggers");
-const { DocumentNotFoundError } = require("./utils/errors");
+const {
+  DocumentNotFoundError,
+} = require("./utils/errors/DocumentNotFoundError");
 
 const app = express();
 const { PORT = 3001 } = process.env;

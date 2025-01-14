@@ -1,13 +1,12 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const {
-  CastError,
-  DocumentNotFoundError,
-  DuplicationError,
-  UnauthorizedError,
-} = require("../utils/errors");
+
 const { JWT_SECRET } = require("../utils/config");
+const CastError = require("../utils/errors/castError");
+const DuplicationError = require("../utils/errors/DuplicationError");
+const UnauthorizedError = require("../utils/errors/UnauthorizedError");
+const DocumentNotFoundError = require("../utils/errors/DocumentNotFoundError");
 
 const createUser = (req, res, next) => {
   const { email, password, name, avatar } = req.body;

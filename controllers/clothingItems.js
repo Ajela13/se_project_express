@@ -1,10 +1,7 @@
 const clothingItems = require("../models/clothingItems");
-
-const {
-  CastError,
-  DocumentNotFoundError,
-  ForbiddenError,
-} = require("../utils/errors");
+const CastError = require("../utils/errors/castError");
+const DocumentNotFoundError = require("../utils/errors/DocumentNotFoundError");
+const ForbiddenError = require("../utils/errors/ForbiddenError");
 
 const getItems = (req, res, next) => {
   clothingItems
