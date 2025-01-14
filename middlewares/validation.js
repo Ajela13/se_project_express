@@ -19,6 +19,10 @@ module.exports.validateClothingItem = celebrate({
       "string.empty": 'The "imageUrl" field must be filled in',
       "string.uri": 'The "imageUrl" field must be a valid URL',
     }),
+    weather: Joi.string().valid("hot", "warm", "cold").required().messages({
+      "string.empty": 'The "weather" field must be filled in',
+      "any.required": "The weather field is required.",
+    }),
   }),
 });
 
