@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const { JWT_SECRET } = require("../utils/config");
-const CastError = require("../utils/errors/castError");
+const CastError = require("../utils/errors/CastError");
 const DuplicationError = require("../utils/errors/DuplicationError");
 const UnauthorizedError = require("../utils/errors/UnauthorizedError");
 const DocumentNotFoundError = require("../utils/errors/DocumentNotFoundError");

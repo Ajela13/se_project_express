@@ -1,5 +1,5 @@
 const clothingItems = require("../models/clothingItems");
-const CastError = require("../utils/errors/castError");
+const CastError = require("../utils/errors/CastError");
 const DocumentNotFoundError = require("../utils/errors/DocumentNotFoundError");
 const ForbiddenError = require("../utils/errors/ForbiddenError");
 
@@ -23,7 +23,7 @@ const createItem = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return next(new CastError());
+        return next(new CastError("Invalid data"));
       }
       return next(err);
     });
@@ -49,7 +49,7 @@ const deleteItem = (req, res, next) => {
       if (err.name === "CastError") {
         return next(new CastError("Invalid data"));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -70,7 +70,7 @@ const updateItemLike = (req, res, next) => {
       if (err.name === "CastError") {
         return next(new CastError("Invalid data"));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -91,7 +91,7 @@ const deleteItemLike = (req, res, next) => {
       if (err.name === "CastError") {
         return next(new CastError("Invalid data"));
       }
-      next(err);
+      return next(err);
     });
 };
 
