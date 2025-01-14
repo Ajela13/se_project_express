@@ -1,11 +1,17 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
+const {
+  CastError,
+  DocumentNotFoundError,
+  DuplicationError,
+  UnauthorizedError,
+} = require("../utils/errors");
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    return res.status(401).send({ message: "Authorization required" });
+    return next(new UnauthorizedError("Authorization requires"));
   }
 
   const token = authorization.replace("Bearer ", "");
@@ -18,7 +24,7 @@ module.exports = (req, res, next) => {
     if (err.name === "TokenExpiredError") {
       return res.status(401).json({ message: "Token expired" });
     }
-    return res.status(401).send({ message: "Authorization Required" });
+    return next(new UnauthorizedError("Authorization requires"));
   }
 
   req.user = payload;
