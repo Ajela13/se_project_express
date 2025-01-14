@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -10,7 +11,7 @@ const {
 } = require("./middlewares/validation");
 const { errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/loggers");
-require("dotenv").config();
+const { DocumentNotFoundError } = require("./utils/errors");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -37,8 +38,8 @@ app.post("/signin", validateUserLoggedIn, login);
 app.post("/signup", validateUserCreated, createUser);
 app.use("/", mainRouter);
 
-app.use((req, res) => {
-  res.status(404).json({ message: "Requested resource not found" });
+app.use((req, res, next) => {
+  next(new DocumentNotFoundError("Requested resources not found"));
 });
 
 app.use(errorLogger);
