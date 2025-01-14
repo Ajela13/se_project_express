@@ -9,7 +9,7 @@ const {
 } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { email, password, name, avatar } = req.body;
 
   if (!email || !password) {
@@ -32,7 +32,7 @@ const createUser = (req, res) => {
   });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return next(new CastError("Email and Password are REQUIRED!"));
@@ -54,7 +54,7 @@ const login = (req, res) => {
       return next(err);
     });
 };
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
       throw new DocumentNotFoundError("User not found");
@@ -71,7 +71,7 @@ const getCurrentUser = (req, res) => {
     });
 };
 
-const updateCurrentUser = (req, res) => {
+const updateCurrentUser = (req, res, next) => {
   const userId = req.user._id;
   const { name, avatar } = req.body;
   User.findByIdAndUpdate(
