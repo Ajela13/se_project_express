@@ -73,3 +73,19 @@ module.exports.validateUserAndClothingId = celebrate({
     }),
   }),
 });
+
+module.exports.validateUpdateUser = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30).messages({
+      "string.empty": "The name field cannot be empty.",
+      "string.min": "The name must be at least 2 characters long.",
+      "string.max": "The name cannot exceed 30 characters.",
+      "any.required": "The name field is required.",
+    }),
+    avatar: Joi.string().required().uri().messages({
+      "string.empty": "The image URL field cannot be empty.",
+      "string.uri": "The image URL must be a valid URL.",
+      "any.required": "The image URL field is required.",
+    }),
+  }),
+});
