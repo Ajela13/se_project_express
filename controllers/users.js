@@ -9,7 +9,6 @@ const UnauthorizedError = require("../utils/errors/UnauthorizedError");
 const DocumentNotFoundError = require("../utils/errors/DocumentNotFoundError");
 
 const createUser = (req, res, next) => {
-  console.log(JWT_SECRET);
   const { email, password, name, avatar } = req.body;
 
   if (!email || !password) {
