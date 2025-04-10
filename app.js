@@ -21,10 +21,14 @@ const allowedOrigins = [
   "https://67f70db44b68fcfd0409bd47--startling-crepe-a80270.netlify.app/",
 ];
 
-mongoose
-  .connect(
-    "mongodb+srv://alejamarino123:<db_password>@cluster0.24gujxf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-  )
+mongoose;
+connect(
+  "mongodb+srv://alejamarino123:<db_password>@cluster0.24gujxf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+)
   .then(() => {
     console.log("connected to db");
   })
