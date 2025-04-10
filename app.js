@@ -16,6 +16,7 @@ const DocumentNotFoundError = require("./utils/errors/DocumentNotFoundError");
 const app = express();
 const { PORT = 3001 } = process.env;
 const allowedOrigins = [
+  "http://localhost:3001/",
   "https://startling-crepe-a80270.netlify.app/",
   "https://67f70db44b68fcfd0409bd47--startling-crepe-a80270.netlify.app/",
 ];
