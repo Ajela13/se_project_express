@@ -23,10 +23,9 @@ mongoose
   })
   .catch(console.error);
 
-const allowedOrigins = [
-  'http://localhost:3000', // para cuando trabajas local
-  'https://startling-crepe-a80270.netlify.app/', // tu frontend en producción
-];
+const allowedOrigins = [ 
+  'https://startling-crepe-a80270.netlify.app/',
+  'https://67f70db44b68fcfd0409bd47--startling-crepe-a80270.netlify.app/'];
 
 app.use(cors({
   origin: allowedOrigins,
