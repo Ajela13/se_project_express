@@ -22,7 +22,9 @@ const allowedOrigins = [
 ];
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/wtwr_db")
+  .connect(
+    "mongodb+srv://alejamarino123:<db_password>@cluster0.24gujxf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  )
   .then(() => {
     console.log("connected to db");
   })
