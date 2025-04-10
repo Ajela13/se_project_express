@@ -15,6 +15,9 @@ const DocumentNotFoundError = require("./utils/errors/DocumentNotFoundError");
 
 const app = express();
 const { PORT = 3001 } = process.env;
+const allowedOrigins = [ 
+  'https://startling-crepe-a80270.netlify.app/',
+  'https://67f70db44b68fcfd0409bd47--startling-crepe-a80270.netlify.app/'];
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
@@ -23,9 +26,6 @@ mongoose
   })
   .catch(console.error);
 
-const allowedOrigins = [ 
-  'https://startling-crepe-a80270.netlify.app/',
-  'https://67f70db44b68fcfd0409bd47--startling-crepe-a80270.netlify.app/'];
 
 app.use(cors({
   origin: allowedOrigins,
