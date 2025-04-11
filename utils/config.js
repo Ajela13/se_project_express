@@ -1,7 +1,6 @@
-const { JWT_SECRET, NODE_ENV, MONGO_URI } = process.env;
+const { JWT_SECRET, NODE_ENV } = process.env;
 
 module.exports = {
   JWT_SECRET,
   NODE_ENV,
-  MONGO_URI,
 };

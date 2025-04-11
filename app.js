@@ -1,5 +1,4 @@
 require("dotenv").config();
-const { MONGO_URI } = require("../utils/config");
 const express = require("express");
 const mongoose = require("mongoose");
 const { errors } = require("celebrate");
@@ -13,9 +12,8 @@ const {
 } = require("./middlewares/validation");
 const { requestLogger, errorLogger } = require("./middlewares/loggers");
 const DocumentNotFoundError = require("./utils/errors/DocumentNotFoundError");
-
 const app = express();
-const { PORT = 3001 } = process.env;
+const { PORT = 3001, MONGO_URI } = process.env;
 const allowedOrigins = [
   "http://localhost:3001/",
   "https://startling-crepe-a80270.netlify.app/",
