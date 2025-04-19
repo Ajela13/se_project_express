@@ -1,7 +1,7 @@
 # WTWR (What to Wear?): Back End
 
-[frontend Domain name](https://wtwr.casepractice.com)
-[backend Domain name](https://api.wtwr.casepractice.com)
+[frontend Domain name](https://startling-crepe-a80270.netlify.app)
+[backend Domain name](https://se-project-express-9nel.onrender.com)
 
 ## Project Overview
 
