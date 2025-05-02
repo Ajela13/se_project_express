@@ -30,7 +30,7 @@ mongoose
 app.use(
   cors({
     origin: allowedOrigins, // Replace with your actual frontend domain
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
     credentials: true, // if you're using cookies or authorization headers
   })
 );
